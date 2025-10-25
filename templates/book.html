@@ -1,31 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
-    <div class="card" style="max-width: 600px; width: 100%;">
-        <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
-            Book Appointment with Dr. {{ doctor.name }}
-        </h2>
-        
-        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
-            <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
-        </div>
-        
-        <form method="POST">
-            <div class="form-group">
-                <label for="slot">Select Time Slot:</label>
-                <select id="slot" name="slot" required>
-                    <option value="">Choose a time slot</option>
-                    {% for slot in doctor.slots %}
-                        <option value="{{ slot }}">{{ slot }}</option>
-                    {% endfor %}
-                </select>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-plus text-white"></i>
+                    </div>
+                    <h3 class="card-title">Book Appointment</h3>
+                    <p class="text-muted">Schedule your consultation</p>
+                </div>
+
+                <div class="card bg-light mb-4">
+                    <div class="card-body text-center">
+                        <h5>Dr. {{ doctor.name }}</h5>
+                        <p class="mb-1">
+                            <span class="badge bg-info">{{ doctor.specialization }}</span>
+                        </p>
+                        <p class="mb-0 text-muted">
+                            <i class="fas fa-briefcase me-1"></i>{{ doctor.experience }} experience
+                        </p>
+                    </div>
+                </div>
+
+                <form method="POST">
+                    <div class="mb-4">
+                        <label for="slot" class="form-label">Select Time Slot</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            <select class="form-select" id="slot" name="slot" required>
+                                <option value="">Choose a time slot</option>
+                                {% for slot in doctor.slots %}
+                                    <option value="{{ slot }}">{{ slot }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <small class="form-text text-muted">Please select your preferred time slot for the consultation</small>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-check me-2"></i>Confirm Booking
+                        </button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </form>
             </div>
-            
-            <button type="submit" class="btn" style="width: 100%;">Confirm Booking</button>
-            <a href="{{ url_for('dashboard') }}" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Cancel</a>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}

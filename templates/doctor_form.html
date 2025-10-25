@@ -1,32 +1,58 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
-    <div class="card" style="max-width: 600px; width: 100%;">
-        <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Doctor Profile</h2>
-        
-        <form method="POST">
-            <div class="form-group">
-                <label for="specialization">Specialization:</label>
-                <input type="text" id="specialization" name="specialization" 
-                       placeholder="e.g., Cardiologist, Pediatrician" required>
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card p-4">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-md text-white"></i>
+                    </div>
+                    <h3 class="card-title">Doctor Profile</h3>
+                    <p class="text-muted">Update your professional information</p>
+                </div>
+
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="specialization" class="form-label">Specialization</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
+                            <input type="text" class="form-control" id="specialization" name="specialization" required 
+                                   placeholder="e.g., Cardiology, Neurology, Pediatrics">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="experience" class="form-label">Years of Experience</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                            <input type="text" class="form-control" id="experience" name="experience" required 
+                                   placeholder="e.g., 5 years, 10+ years">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="slots" class="form-label">Available Time Slots</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            <input type="text" class="form-control" id="slots" name="slots" required 
+                                   placeholder="e.g., 9:00 AM, 10:00 AM, 2:00 PM (comma separated)">
+                        </div>
+                        <small class="form-text text-muted">Enter your available time slots separated by commas</small>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Profile
+                        </button>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                </form>
             </div>
-            
-            <div class="form-group">
-                <label for="experience">Years of Experience:</label>
-                <input type="number" id="experience" name="experience" 
-                       min="0" max="50" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="slots">Available Time Slots (comma separated):</label>
-                <textarea id="slots" name="slots" rows="4" 
-                          placeholder="e.g., Monday 9:00 AM, Tuesday 2:00 PM, Wednesday 10:00 AM" required></textarea>
-                <small>Enter each time slot separated by commas</small>
-            </div>
-            
-            <button type="submit" class="btn" style="width: 100%;">Save Profile</button>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
