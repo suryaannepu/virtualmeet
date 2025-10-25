@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; justify-content: center; align-items: center; min-height: 70vh;">
+    <div class="card" style="max-width: 600px; width: 100%;">
+        <h2 style="text-align: center; margin-bottom: 30px; color: #333;">
+            Book Appointment with Dr. {{ doctor.name }}
+        </h2>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+            <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+            <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+        </div>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="slot">Select Time Slot:</label>
+                <select id="slot" name="slot" required>
+                    <option value="">Choose a time slot</option>
+                    {% for slot in doctor.slots %}
+                        <option value="{{ slot }}">{{ slot }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <button type="submit" class="btn" style="width: 100%;">Confirm Booking</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-danger" style="width: 100%; margin-top: 10px;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

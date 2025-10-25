@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="welcome">
+    <h1>Welcome, {{ session.name }}!</h1>
+    <p>Role: {{ session.role|title }}</p>
+</div>
+
+<div class="card">
+    {% if role == 'doctor' %}
+        <h2>Doctor Dashboard</h2>
+        
+        {% if not doctor_profile %}
+            <div style="text-align: center; padding: 20px;">
+                <p>Please complete your doctor profile to start receiving appointments.</p>
+                <a href="{{ url_for('doctor_form') }}" class="btn">Complete Profile</a>
+            </div>
+        {% else %}
+            <h3>Your Profile</h3>
+            <p><strong>Specialization:</strong> {{ doctor_profile.specialization }}</p>
+            <p><strong>Experience:</strong> {{ doctor_profile.experience }} years</p>
+            <p><strong>Available Slots:</strong> {{ doctor_profile.slots|join(', ') }}</p>
+            <a href="{{ url_for('doctor_form') }}" class="btn">Update Profile</a>
+            
+            <h3 style="margin-top: 30px;">Your Appointments</h3>
+            {% if bookings %}
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                        <thead>
+                            <tr style="background: #f8f9fa;">
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Patient</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Time Slot</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Meeting Link</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Booked At</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ booking.patient_name }}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ booking.slot }}</td>
+                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                    <a href="{{ booking.jitsi_link }}" target="_blank" class="btn">Join Meeting</a>
+                                </td>
+                                <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ booking.created_at }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No appointments yet.</p>
+            {% endif %}
+        {% endif %}
+        
+    {% else %}
+        <h2>Patient Dashboard</h2>
+        
+        <h3>Available Doctors</h3>
+        {% if doctors %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+                {% for doctor in doctors %}
+                <div style="border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                    <h4>Dr. {{ doctor.name }}</h4>
+                    <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+                    <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+                    <p><strong>Available Slots:</strong> {{ doctor.slots|join(', ') }}</p>
+                    <a href="{{ url_for('book', doctor_email=doctor.email) }}" class="btn">Book Appointment</a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No doctors available at the moment.</p>
+        {% endif %}
+        
+        {% if patient_bookings %}
+            <h3 style="margin-top: 30px;">Your Appointments</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                    <thead>
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Doctor</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Specialization</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Time Slot</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dee2e6;">Meeting Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in patient_bookings %}
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">Dr. {{ booking.doctor_name }}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ booking.specialization }}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">{{ booking.slot }}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #dee2e6;">
+                                <a href="{{ booking.jitsi_link }}" target="_blank" class="btn">Join Meeting</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
